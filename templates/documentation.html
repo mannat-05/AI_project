@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maze Solver Documentation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="page-shell docs-shell">
+        <header>
+            <h1>Hybrid Elastic A* Maze Solver Documentation</h1>
+            <p>A technical overview of the search model, its integration, and the browser simulation.</p>
+            <a class="button" href="/">Back to Simulator</a>
+        </header>
+
+        <main class="docs-content">
+            <section>
+                <h2>1. How the Model Works</h2>
+                <p>This project uses a hybrid search strategy combining an A* style pathfinder with a custom <strong>ElasticHashSet</strong> to efficiently track visited states.</p>
+                <ul>
+                    <li><strong>ElasticHashSet</strong>: A multi-layer open-addressing hash set inspired by elastic hashing. It stores state entries across three shrinking layers to reduce collision cost and speed up membership checks.</li>
+                    <li><strong>Hybrid Elastic A*</strong>: Extends classical A* by using 8-way movement and a turn penalty. The solver can move diagonally, but diagonal progress is blocked when adjacent cardinal neighbors are walls.</li>
+                    <li><strong>Octile heuristic</strong>: Estimates travel cost for diagonal grids while preserving admissibility. This is ideal for 8-way grid motion.</li>
+                    <li><strong>Turn penalty</strong>: A small extra cost for changing direction encourages smoother paths and better real-world motion profiles.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>2. Search Model Integration</h2>
+                <p>The web simulator integrates the same search logic from the project environment:</p>
+                <ul>
+                    <li>The backend uses <code>web/solver.py</code>, which mirrors the same algorithm from <code>master_run.py</code>.</li>
+                    <li>The search solver receives a generated maze and returns a complete path from the start at <code>(0, 0)</code> to the goal at the bottom-right cell.</li>
+                    <li>The returned path is rendered in the browser, while metrics are reported back to the user in real time.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>3. Simulation and Maze Environment</h2>
+                <p>The browser simulation reuses the same maze concepts found in the Python environment:</p>
+                <ul>
+                    <li><strong>Random scattered maze</strong>: A dense obstacle field with guaranteed solvability.</li>
+                    <li><strong>Structured corridor maze</strong>: A carved passage layout resembling competition-style maze environments.</li>
+                    <li>The grid display highlights walls, free space, the start cell, the goal cell, and the computed path.</li>
+                </ul>
+                <p>The simulator uses a canvas to draw the maze and animates the path as a green trail.</p>
+            </section>
+
+            <section>
+                <h2>4. Architecture</h2>
+                <p>Files added for the website:</p>
+                <ul>
+                    <li><code>web_app.py</code>: Flask backend with API routes for solving mazes.</li>
+                    <li><code>web/solver.py</code>: Search algorithm and maze factory logic.</li>
+                    <li><code>templates/index.html</code> and <code>templates/documentation.html</code>: Frontend pages.</li>
+                    <li><code>static/app.js</code> and <code>static/style.css</code>: Browser rendering and styling.</li>
+                </ul>
+                <p>This architecture makes the site easy to extend while preserving the core solver used by the existing Python project.</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

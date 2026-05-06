@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hybrid Maze Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="page-shell">
+        <header>
+            <h1>Hybrid Elastic A* Maze Solver</h1>
+            <p>Interactive maze generation, pathfinding simulation, and model documentation.</p>
+            <a class="button" href="/documentation">Read Documentation</a>
+        </header>
+
+        <main>
+            <section class="controls-panel">
+                <div class="control-group">
+                    <label for="mazeMode">Maze Type</label>
+                    <select id="mazeMode">
+                        <option value="random">Random Scattered Maze</option>
+                        <option value="structured">Structured Corridor Maze</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="rows">Rows</label>
+                    <input id="rows" type="number" min="5" max="60" value="20" />
+                </div>
+                <div class="control-group">
+                    <label for="cols">Columns</label>
+                    <input id="cols" type="number" min="5" max="60" value="20" />
+                </div>
+                <div class="control-group density-group">
+                    <label for="density">Obstacle Density: <span id="densityValue">0.25</span></label>
+                    <input id="density" type="range" min="0" max="0.75" step="0.01" value="0.25" />
+                </div>
+                <button id="generateButton" class="button">Generate & Solve</button>
+            </section>
+
+            <section class="maze-section">
+                <canvas id="mazeCanvas"></canvas>
+                <div class="metrics-box">
+                    <h2>Solver Metrics</h2>
+                    <div id="metricsContent">
+                        <p>Click Generate & Solve to start the simulation.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Analysis Results</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalMetrics" class="metrics-grid"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="button button-secondary" onclick="closeModal()">Try Again</button>
+                <button class="button" onclick="downloadResults()">Export Results</button>
+            </div>
+        </div>
+    </div>
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
